@@ -14,7 +14,7 @@ alwaysApply: true
 ### ルール1：計画が存在しない場合
 
 **[条件]**
-プロジェクトのルートに `plan.md` ファイルが存在しない。
+プロジェクトのルートに `.cursor/blueprint/plan.md` ファイルが存在しない。
 
 **[あなたの行動]**
 ユーザーとの対話の最初に、必ず以下の提案をしてください。
@@ -30,7 +30,7 @@ alwaysApply: true
 ### ルール2：タスクが存在しない場合
 
 **[条件]**
-`plan.md` は存在するが、`task.md` が存在しない。
+`.cursor/blueprint/plan.md` は存在するが、`.cursor/blueprint/task.md` が存在しない。
 
 **[あなたの行動]**
 ユーザーとの対話の最初に、必ず以下の提案をしてください。
@@ -46,15 +46,61 @@ alwaysApply: true
 ### ルール3：計画とタスクが両方存在する場合
 
 **[条件]**
-`plan.md` と `task.md` の両方が存在する。
+`.cursor/blueprint/plan.md` と `.cursor/blueprint/task.md` の両方が存在する。
 
 **[あなたの行動]**
 ユーザーとの対話の最初に、必ず以下の提案をしてください。
 
 > **AIからの提案:**
-> 「こんにちは。現在のタスクは `@task.md` に定義されていますね。
+> 「こんにちは。現在のタスクは `.cursor/blueprint/task.md` に定義されていますね。
 > このタスクの完了条件に基づいて、具体的な作業を進めましょう。
 > どの完了条件から着手しますか？指示をください。」
+
+---
+
+### ルール4：タスクのIssue化
+
+**[条件]**
+`task.md` が存在し、そのタスクに対応するGitHubの親Issueがまだ作成されていない場合。
+
+**[あなたの行動]**
+1.  `.cursor/blueprint/task.md` の内容に基づき、親となるGitHub Issueを作成します。Issue作成時にはユーザーに確認を取ります。
+    > **AIからの提案:**
+    > 「現在のタスク `@task.md` に対応する親Issueを作成します。よろしいですか？」
+2.  作成したIssue番号を `.cursor/blueprint/task.md` のバージョン管理セクションに記録します。
+
+---
+
+### ルール5：作業詳細のサブIssue化
+
+**[条件]**
+具体的な作業（`.cursor/blueprint/task_logs/`に記述されるような作業単位）を開始する前。
+
+**[あなたの行動]**
+1.  これから着手する作業内容（例：「開発環境のセットアップ」）を、親IssueのサブIssueとして作成することを提案します。
+    > **AIからの提案:**
+    > 「次に『（作業内容）』に着手します。これを親Issue（#XX）のサブIssueとして作成してもよろしいですか？」
+2.  ユーザーの承認後、サブIssueを作成します。
+3.  作成したサブIssue番号を `.cursor/blueprint/task.md` のバージョン管理セクションに追記します。
+4.  対応する完了条件を `.cursor/blueprint/task.md` 内で更新し、作成したサブIssueの作業ログファイルへのリンクを追加します。
+5.  全ての作業内容（実行したコマンド、編集したファイル、思考プロセスなど）を `.cursor/blueprint/task_logs/issue-XX-task-name.md` に時系列で記録することをユーザーに宣言します。
+    > **AIからの提案:**
+    > 「これからの作業内容は、すべて `.cursor/blueprint/task_logs/issue-XX-task-name.md` に記録していきます。」
+
+---
+
+### ルール6：現在の作業の追跡
+
+**[条件]**
+新しい作業に着手する際、または作業中のタスクが完了した際。
+
+**[あなたの行動]**
+1.  **作業着手時**: `.cursor/blueprint/current_work.md` を **`templates/current_work_template.md` を基に** 更新し、現在取り組んでいるタスクの情報を記述します。
+    > **AIからの提案:**
+    > 「`current_work.md` を更新し、現在の作業を『（タスクのタイトル）』に設定します。」
+2.  **タスク完了時**: `.cursor/blueprint/current_work.md` の「Currently Active Task」セクションをクリアし、「Recently Completed Tasks」セクションに完了したタスクの情報を追加します。完了日と、関連する作業ログファイルへのリンクを含めます。
+    > **AIからの提案:**
+    > 「`current_work.md` を更新し、『（タスクのタイトル）』を完了済みとして記録します。」
 
 ---
 
