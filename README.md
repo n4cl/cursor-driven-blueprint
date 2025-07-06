@@ -22,56 +22,44 @@ git clone https://github.com/n4cl/cursor-driven-blueprint .cursor/blueprint
 
 ## 📖 実行フロー
 
-このフレームワークでは、あなたがエージェントに「宣言」することで、課題解決の各フェーズを開始します。
+このフレームワークを利用して、CursorのAIを活用しながらプロジェクトを進めるための基本的な流れを説明します。
 
-### フェーズ1：プロジェクトの開始 (plan) 🗺️
+### プロジェクトの開始
 
 **目的:** プロジェクト全体の計画書 `.cursor/blueprint/plan.md` を作成する。
 
 **手順:**
-CursorのAIチャットで、以下のように**宣言**します。
+CursorのAgentチャットにて、以下のように指示をします。
 
 > **あなたのプロンプト:**
-> 「**プロジェクトを開始します。**
-> `@.cursor/blueprint/templates/plan_TEMPLATE.md` を参考にして、プロジェクトの計画を立てるための質問をしてください。」
+> 「プロジェクトを開始します。
+> `@.cursor/blueprint/project-flow.mdc を参考に、プロジェクトの計画を立てるための質問をしてください。」
 
 **AIとの対話:**
-AIが計画に必要な質問をしてくるので、それに答えていきます。対話が終わると、AIが `.cursor/blueprint/plan.md` を作成してくれます。
+AIが計画に必要な質問をしてくるので、それに答えていきます。対話が終わると、プロジェクトに必要なファイルが作成されます。
 
-### フェーズ2：タスクの開始 (task) 📝
+## 📁 ディレクトリ構造
 
-**目的:** 直近で取り組むべき作業指示書 `.cursor/blueprint/task.md` を作成する。
+```
+.cursor/blueprint/
+├── project/
+│   ├── plan.md
+│   ├── milestone-1/
+│   │   ├── milestone.md
+│   │   ├── task-001.md
+│   │   └── ...
+│   ├── milestone-2/
+│   │   ├── milestone.md
+│   │   └── ...
+│   └── ...
+├── README.md
+├── templates/
+│   ├── plan_template.md
+│   ├── milestone_template.md
+│   └── task_template.md
+```
 
-**手順:**
-`plan.md` が存在する状態で、AIチャットに以下のように**宣言**します。
-
-> **あなたのプロンプト:**
-> 「**タスクを開始します。**
-> `@.cursor/blueprint/plan.md` の内容を読み込んで、次に取り組むべきタスクの候補をいくつか提案してください。」
-
-**AIとの対話:**
-AIの提案からタスクを選ぶか、自分でタスクを指定します。AIとの対話を通じて、`.cursor/blueprint/task.md` が作成されます。
-
-### フェーズ3：タスクの実行 (EXECUTE) ⚡
-
-**目的:** `task.md` に基づいて、具体的な作業を完了させる。
-
-**手順:**
-`task.md` が存在する状態で、AIチャットに以下のように指示します。
-
-> **あなたのプロンプト:**
-> 「`@.cursor/blueprint/task.md` の完了条件に基づいて、作業を進めてください。
-> まずは『（完了条件の具体的な内容）』を実装してください。」
-
-### フェーズ4：タスクの完了 (CYCLE) 🔄
-
-**目的:** 完了したタスクを整理し、次のサイクルに備える。
-
-**手順:**
-`task.md` の作業がすべて完了したら、AIチャットで以下のように**宣言**します。
-
-> **あなたのプロンプト:**
-> 「**このタスクは完了しました。**
-> `.cursor/blueprint/task.md` を `.cursor/blueprint/archive/` ディレクトリに適切な名前で移動し、`.cursor/blueprint/plan.md` の該当項目にチェックを入れてください。」
-
-この宣言により、AIが後片付けを行い、プロジェクトは再び「フェーズ2：タスクの開始」を待つ状態に戻ります。
+- **project/plan.md**: プロジェクト全体の目的・成果物・マイルストーン一覧。1プロジェクト1つ。
+- **project/milestone-x/milestone.md**: 各マイルストーンの詳細（ゴール・完了条件・関連タスク一覧）。
+- **project/milestone-x/task-xxx.md**: milestone.mdの完了条件を分解した最小単位のタスク。1タスク1ファイル。
+- **templates/**: 各種テンプレート。
