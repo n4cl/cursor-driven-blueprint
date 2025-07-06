@@ -1,7 +1,7 @@
 # updateCurrentWork アクション詳細
 
 ## 概要
-現在の作業状況（current_work.mdやproject-current-state.md）を更新するアクション。
+現在の作業状況（project-current-state.md）を更新するアクション。
 
 ## 実行ルール
 - 作業着手時やタスク完了時に、現在の状態・作業内容・直近アクションなどを記録する。
