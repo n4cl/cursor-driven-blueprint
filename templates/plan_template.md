@@ -23,6 +23,7 @@
 
 ## 5. 補足情報 (Additional Information)
 *このプロジェクトに特有の情報を自由に記述してください。AIが文脈を理解する助けになります。*
+*   **GitHub Repository URL:** (自動検出されます)
 
 ---
 
